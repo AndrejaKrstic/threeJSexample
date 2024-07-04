@@ -5,7 +5,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
-const loader = new GLTFLoader();
+const loadingManager = new THREE.LoadingManager();
+const loader = new GLTFLoader(loadingManager);
 const scene = new THREE.Scene();
 
 // Optional: Provide a DRACOLoader instance to decode compressed mesh data
@@ -13,11 +14,45 @@ const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath("/examples/jsm/libs/draco/");
 loader.setDRACOLoader(dracoLoader);
 
+const loadingDiv = document.getElementById("progressDiv") as HTMLDivElement;
+
 const ambientLightning = new THREE.AmbientLight(0xffffff, 0.8);
 scene.add(ambientLightning);
 scene.background = new THREE.CubeTextureLoader()
   .setPath("https://sbcode.net/img/")
   .load(["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"]);
+
+loadingManager.onStart = function (url, itemsLoaded, itemsTotal) {
+  console.log(
+    "Started loading file: " +
+      url +
+      ".\nLoaded " +
+      itemsLoaded +
+      " of " +
+      itemsTotal +
+      " files."
+  );
+};
+
+loadingManager.onLoad = function () {
+  console.log("Loading complete!");
+};
+
+loadingManager.onProgress = function (url, itemsLoaded, itemsTotal) {
+  console.log(
+    "Loading file: " +
+      url +
+      ".\nLoaded " +
+      itemsLoaded +
+      " of " +
+      itemsTotal +
+      " files."
+  );
+};
+
+loadingManager.onError = function (url) {
+  console.log("There was an error loading " + url);
+};
 
 loader.load(
   // resource URL
@@ -34,11 +69,18 @@ loader.load(
   },
   // called while loading is progressing
   function (xhr) {
-    console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+    const progress = ((xhr.loaded / xhr.total) * 100).toFixed(2);
+    console.log(progress + "% loaded");
+
+    loadingDiv.innerHTML = `Progress: ${progress}%`;
+    if (progress === "100.00") {
+      loadingDiv.style.display = "none";
+    }
   },
   // called when loading has errors
-  function (_error) {
+  function (error) {
     console.log("An error happened");
+    console.log(error);
   }
 );
 
@@ -50,8 +92,8 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.set(0, 10, 20);
-camera.lookAt(0, 5, 0);
+camera.position.set(0, 10, 25);
+camera.lookAt(0, 2, 0);
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
