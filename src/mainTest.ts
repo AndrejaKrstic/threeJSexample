@@ -56,7 +56,7 @@ loadingManager.onError = function (url) {
 
 loader.load(
   // resource URL
-  "../public/opa.glb",
+  "public/opa.glb",
   // called when the resource is loaded
   function (gltf) {
     scene.add(gltf.scene);
