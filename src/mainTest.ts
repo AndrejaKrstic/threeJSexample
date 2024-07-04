@@ -37,7 +37,7 @@ loader.load(
     console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
   },
   // called when loading has errors
-  function (error) {
+  function (_error) {
     console.log("An error happened");
   }
 );
