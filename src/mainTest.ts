@@ -50,6 +50,11 @@ loadingManager.onProgress = function (url, itemsLoaded, itemsTotal) {
       itemsTotal +
       " files."
   );
+  const progress = ((itemsLoaded / itemsTotal) * 100).toFixed(2);
+  loadingDiv.innerHTML = `Progress: ${progress}%`;
+  if (progress === "100.00") {
+    loadingDiv.style.display = "none";
+  }
 };
 
 loadingManager.onError = function (url) {
@@ -73,11 +78,6 @@ loader.load(
   function (xhr) {
     const progress = ((xhr.loaded / xhr.total) * 100).toFixed(2);
     console.log(progress + "% loaded");
-
-    loadingDiv.innerHTML = `Progress: ${progress}%`;
-    if (progress === "100.00") {
-      loadingDiv.style.display = "none";
-    }
   },
   // called when loading has errors
   function (error) {
