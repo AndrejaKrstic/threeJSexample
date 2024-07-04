@@ -11,7 +11,7 @@ const scene = new THREE.Scene();
 
 // Optional: Provide a DRACOLoader instance to decode compressed mesh data
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("/examples/jsm/libs/draco/");
+dracoLoader.setDecoderPath("../public/draco/");
 loader.setDRACOLoader(dracoLoader);
 
 const loadingDiv = document.getElementById("progressDiv") as HTMLDivElement;
@@ -56,7 +56,7 @@ loadingManager.onError = function (url) {
 
 loader.load(
   // resource URL
-  "../public/untitled.glb",
+  "../public/opa.glb",
   // called when the resource is loaded
   function (gltf) {
     scene.add(gltf.scene);
@@ -83,8 +83,6 @@ loader.load(
     console.log(error);
   }
 );
-
-// scene.add(new THREE.GridHelper());
 
 const camera = new THREE.PerspectiveCamera(
   75,
