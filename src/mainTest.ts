@@ -13,7 +13,7 @@ const scene = new THREE.Scene();
 
 // Optional: Provide a DRACOLoader instance to decode compressed mesh data
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("../public/draco/");
+dracoLoader.setDecoderPath("./lib/res/draco/");
 loader.setDRACOLoader(dracoLoader);
 
 const loadingDiv = document.getElementById("progressDiv") as HTMLDivElement;
