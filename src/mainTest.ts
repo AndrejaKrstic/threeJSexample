@@ -4,6 +4,7 @@ import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import myGLB from "./lib/res/models/opa.glb";
 
 const loadingManager = new THREE.LoadingManager();
 const loader = new GLTFLoader(loadingManager);
@@ -56,7 +57,7 @@ loadingManager.onError = function (url) {
 
 loader.load(
   // resource URL
-  "public/opa.glb",
+  myGLB,
   // called when the resource is loaded
   function (gltf) {
     scene.add(gltf.scene);
